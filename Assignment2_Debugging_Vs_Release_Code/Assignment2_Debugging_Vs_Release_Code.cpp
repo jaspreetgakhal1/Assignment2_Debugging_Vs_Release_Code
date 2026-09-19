@@ -1,20 +1,87 @@
-// Assignment2_Debugging_Vs_Release_Code.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <sstream>
+
+// Avoid repeatedly using std::. For example,
+// std::cout becomes cout and std::string becomes string.
+using namespace std;
+
+
+// Removes one blank space from the beginning of a string if one exists.
+// For example, " Singh" becomes "Singh".
+void removeBlankSpaceAtFront(string& text)
+{
+    // Check that the string is not empty and that
+    // the first character is a blank space.
+    if (!text.empty() && text.front() == ' ')
+        text.erase(0, 1);
+}
+
+
+// Stores information for each student.
+// As instructed, STUDENT_DATA contains the student's
+// first and last name.
+struct STUDENT_DATA
+{
+    string firstName;
+    string lastName;
+};
+
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    // StudentData.txt is the input file required for the
+    // initial implementation.
+    const string filename = "StudentData.txt";
+
+    // Stores all student objects created from the input file.
+    // The vector can grow as student objects are added.
+    vector<STUDENT_DATA> students;
+
+    // Open the student data file.
+    ifstream file(filename);
+
+    // Check whether the file was opened successfully.
+    // Return 1 if the file cannot be opened.
+    if (!file.is_open())
+    {
+        cerr << "Error opening the file: " << filename << '\n';
+        return 1;
+    }
+
+    // Stores one full line read from the student data file.
+    string line;
+
+    // Read the file one line at a time until the end of the file.
+    while (getline(file, line))
+    {
+        // Skip any empty lines.
+        if (line.empty())
+        {
+            continue;
+        }
+
+        // Create a stringstream from the current line so the
+        // first and last names can be separated using the comma.
+        stringstream ss(line);
+
+        // Temporary student object used to store the parsed data.
+        STUDENT_DATA student;
+
+        // Read the first name until the comma, then read the
+        // remaining text as the last name.
+        if (getline(ss, student.firstName, ',') &&
+            getline(ss, student.lastName))
+        {
+            // Remove a possible blank space before the last name.
+            removeBlankSpaceAtFront(student.lastName);
+
+            // Push the completed STUDENT_DATA object into the vector.
+            students.push_back(student);
+        }
+    }
+
+    return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
