@@ -32,6 +32,14 @@ struct STUDENT_DATA
 
 int main()
 {
+    // State whether the application is running standard
+    // or pre-release source code.
+#ifdef PRE_RELEASE
+    cout << "Running PRE-RELEASE source code.\n";
+#else
+    cout << "Running STANDARD source code.\n";
+#endif
+
     // StudentData.txt is the input file required for the
     // initial implementation.
     const string filename = "StudentData.txt";
@@ -83,7 +91,6 @@ int main()
         }
     }
 
-
     // Student information should only be displayed when
     // the application is compiled in Debug mode.
 #ifdef _DEBUG
@@ -99,7 +106,6 @@ int main()
     }
 
 #endif
-
 
     return 0;
 }
