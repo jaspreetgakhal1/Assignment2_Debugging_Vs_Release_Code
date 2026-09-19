@@ -83,5 +83,23 @@ int main()
         }
     }
 
+
+    // Student information should only be displayed when
+    // the application is compiled in Debug mode.
+#ifdef _DEBUG
+
+    cout << "\n--- Student Data List (DEBUG MODE) ---\n";
+
+    // Loop through every student stored in the vector.
+    for (const STUDENT_DATA& student : students)
+    {
+        cout << "First Name: " << student.firstName
+            << ", Last Name: " << student.lastName
+            << '\n';
+    }
+
+#endif
+
+
     return 0;
 }
